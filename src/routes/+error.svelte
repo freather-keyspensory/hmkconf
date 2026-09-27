@@ -14,6 +14,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
+  import { base } from "$app/paths"
   import { HouseIcon } from "@lucide/svelte"
   import Footer from "$lib/components/footer.svelte"
   import { Button } from "$lib/components/ui/button"
@@ -23,7 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <div class="text-center">
     <h1 class="text-5xl font-semibold tracking-tight">Page not found</h1>
     <div class="mt-6 grid place-items-center">
-      <Button href="/" size="lg">
+      <Button href={base + "/"} size="lg">
         <HouseIcon /> Go Back Home
       </Button>
     </div>
