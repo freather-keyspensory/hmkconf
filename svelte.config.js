@@ -6,7 +6,7 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
-    paths: { base: process.env.CONFIG_BASE_PATH || "/config/hmkconf" },
+    paths: { base: process.env.CONFIG_BASE_PATH || "/hmkconf" },
   },
 }
 
