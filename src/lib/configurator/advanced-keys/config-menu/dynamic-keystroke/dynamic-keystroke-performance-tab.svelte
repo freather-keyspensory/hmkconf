@@ -18,6 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import DistanceSlider from "$lib/components/distance-slider.svelte"
   import { actuationQueryContext } from "$lib/configurator/queries/actuation-query.svelte"
   import { distanceToUnit } from "$lib/distance"
+  import { t } from "$lib/i18n"
   import { DEFAULT_ACTUATION_POINT } from "$lib/libhmk/actuation"
   import type { HMK_AKDynamicKeystroke } from "$lib/libhmk/advanced-keys"
   import { cn, optMap, type WithoutChildren } from "$lib/utils"
@@ -53,7 +54,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     description="Set the actuation point for &quot;Key press&quot; and &quot;Key release&quot; actions."
     disabled={!actuationMap}
     max={distanceToUnit(action.bottomOutPoint)}
-    title="Actuation Point"
+    title={$t("Actuation Point")}
   />
   <DistanceSlider
     bind:committed={
@@ -63,12 +64,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     description="Set the actuation point for &quot;Key fully pressed&quot; and &quot;Key released from fully pressed&quot; actions."
     disabled={!actuationMap}
     min={optMap(actuationMap?.[key].actuationPoint, distanceToUnit)}
-    title="Bottom Out Point"
+    title={$t("Bottom Out Point")}
   />
   <div class="flex items-center gap-2 text-muted-foreground">
     <InfoIcon class="size-4" />
     <p class="text-sm">
-      Rapid Trigger is automatically disabled for Dynamic Keystroke keys.
+      {$t(
+        "Rapid Trigger is automatically disabled for Dynamic Keystroke keys.",
+      )}
     </p>
   </div>
 </div>

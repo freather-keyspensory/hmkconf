@@ -19,6 +19,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { Badge } from "$lib/components/ui/badge"
   import { Button } from "$lib/components/ui/button"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import { cn, type WithoutChildren } from "$lib/utils"
   import { toast } from "svelte-sonner"
@@ -51,17 +52,21 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       try {
         const json = JSON.parse(await file.text())
         await keyboardConfig.setConfig(profile, json)
-        toast.success(`Successfully imported Profile ${profile}.`)
+        toast.success(
+          $t("Successfully imported Profile {number}.", { number: profile }),
+        )
       } catch (err) {
         if (err instanceof SyntaxError) {
-          toast.error("The selected file is not a valid JSON.")
+          toast.error($t("The selected file is not a valid JSON."))
         } else if (err instanceof z.ZodError) {
           toast.error(
-            "The selected file is not a valid keyboard metadata. See console for details.",
+            $t(
+              "The selected file is not a valid keyboard metadata. See console for details.",
+            ),
           )
           console.error(z.treeifyError(err))
         } else {
-          toast.error(String(err))
+          toast.error($t(err instanceof Error ? err.message : String(err)))
         }
       }
     }
@@ -77,15 +82,19 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       })
       anchorRef.href = URL.createObjectURL(blob)
       anchorRef.download = `${name}-profile-${profile}.json`
-      toast.success(`Successfully exported Profile ${profile}.`)
+      toast.success(
+        $t("Successfully exported Profile {number}.", { number: profile }),
+      )
     } catch (err) {
       if (err instanceof z.ZodError) {
         toast.error(
-          "Unexpected keyboard configuration schema error. See console for details.",
+          $t(
+            "Unexpected keyboard configuration schema error. See console for details.",
+          ),
         )
         console.error(z.treeifyError(err))
       } else {
-        toast.error(String(err))
+        toast.error($t(err instanceof Error ? err.message : String(err)))
       }
     }
     anchorRef.click()
@@ -98,10 +107,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 >
   <FixedScrollArea class="flex flex-col gap-4 p-4">
     <div class="grid shrink-0">
-      <span class="font-semibold">Configure Profiles</span>
+      <span class="font-semibold">{$t("Configure Profiles")}</span>
       <span class="text-sm text-muted-foreground">
-        Manage your keyboard profiles here. You can import, export, and
-        customize them.
+        {$t(
+          "Manage your keyboard profiles here. You can import, export, and customize them.",
+        )}
       </span>
     </div>
     <div class="grid grid-cols-2 gap-4">
@@ -110,32 +120,33 @@ this program. If not, see <https://www.gnu.org/licenses/>.
           class="flex items-center gap-4 rounded-lg border bg-card p-4 text-card-foreground shadow-sm"
         >
           <div class="grid flex-1 truncate font-semibold">
-            Profile {profile}
+            {$t("Profile")}
+            {profile}
           </div>
           <div class="flex shrink-0 items-center gap-2">
             {#if profile === currentProfile}
-              <Badge>Active</Badge>
+              <Badge>{$t("Active")}</Badge>
             {/if}
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
                 {#snippet child({ props })}
                   <Button size="icon" variant="ghost" {...props}>
                     <EllipsisVerticalIcon />
-                    <span class="sr-only">Open Menu</span>
+                    <span class="sr-only">{$t("Open Menu")}</span>
                   </Button>
                 {/snippet}
               </DropdownMenu.Trigger>
               <DropdownMenu.Content align="start" class="w-40">
                 <DropdownMenu.Group>
                   <DropdownMenu.Item onSelect={() => importProfile(profile)}>
-                    Import
+                    {$t("Import")}
                   </DropdownMenu.Item>
                   <DropdownMenu.Item onSelect={() => exportProfile(profile)}>
-                    Export
+                    {$t("Export")}
                   </DropdownMenu.Item>
                   <DropdownMenu.Sub>
                     <DropdownMenu.SubTrigger>
-                      Duplicate From
+                      {$t("Duplicate From")}
                     </DropdownMenu.SubTrigger>
                     <DropdownMenu.SubContent>
                       {#each { length: numProfiles }, srcProfile (srcProfile)}
@@ -147,7 +158,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
                                 srcProfile,
                               })}
                           >
-                            Profile {srcProfile}
+                            {$t("Profile")}
+                            {srcProfile}
                           </DropdownMenu.Item>
                         {/if}
                       {/each}
@@ -156,7 +168,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
                   <DropdownMenu.Item
                     onSelect={() => profileQuery.resetProfile({ profile })}
                   >
-                    Restore Default
+                    {$t("Restore Default")}
                   </DropdownMenu.Item>
                 </DropdownMenu.Group>
               </DropdownMenu.Content>

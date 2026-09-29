@@ -1,6 +1,7 @@
 <script lang="ts">
   import XIcon from "@lucide/svelte/icons/x"
   import { Button } from "$lib/components/ui/button/index.js"
+  import { t } from "$lib/i18n"
   import { cn, type WithoutChildrenOrChild } from "$lib/utils.js"
   import { Dialog as DialogPrimitive } from "bits-ui"
   import type { ComponentProps, Snippet } from "svelte"
@@ -43,7 +44,7 @@
             {...props}
           >
             <XIcon />
-            <span class="sr-only">Close</span>
+            <span class="sr-only">{$t("Close")}</span>
           </Button>
         {/snippet}
       </DialogPrimitive.Close>

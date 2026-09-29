@@ -14,6 +14,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
+  import LanguageSelect from "$lib/components/language-select.svelte"
   import GithubLink from "./github-link.svelte"
   import ThemeSwitcher from "./theme-switcher.svelte"
 </script>
@@ -23,6 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     <h1 class="text-xl font-semibold tracking-tight">hmkconf</h1>
   </div>
   <div class="flex shrink-0 items-center gap-2">
+    <LanguageSelect />
     <GithubLink />
     <ThemeSwitcher />
   </div>

@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { KeyboardIcon } from "@lucide/svelte"
   import * as Select from "$lib/components/ui/select"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import { globalStateContext } from "./context.svelte"
   import { profileQueryContext } from "./queries/profile-query.svelte"
@@ -36,7 +37,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 >
   <Select.Trigger class="w-48" size="sm">
     <span class="flex items-center gap-2">
-      Profile {profile}
+      {$t("Profile")}
+      {profile}
       {#if keyboardProfile === profile}
         <KeyboardIcon />
       {/if}
@@ -46,14 +48,15 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     {#each { length: numProfiles }, i (i)}
       <Select.Item value={String(i)}>
         <span class="flex items-center gap-2">
-          Profile {i}
+          {$t("Profile")}
+          {i}
           {#if keyboardProfile === i}
             <Tooltip.Root>
               <Tooltip.Trigger>
                 <KeyboardIcon />
-                <span class="sr-only">Active</span>
+                <span class="sr-only">{$t("Active")}</span>
               </Tooltip.Trigger>
-              <Tooltip.Content>Current Active Profile</Tooltip.Content>
+              <Tooltip.Content>{$t("Current Active Profile")}</Tooltip.Content>
             </Tooltip.Root>
           {/if}
         </span>

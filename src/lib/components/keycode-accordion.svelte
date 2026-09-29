@@ -15,6 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import { XIcon } from "@lucide/svelte"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import {
     getCategorizedKeycodes,
@@ -58,7 +59,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
             const { name, tooltip = "" } = getKeycodeMetadata(keycode)
             return (
               name.toLowerCase().includes(lowerSearch) ||
-              tooltip.toLowerCase().includes(lowerSearch)
+              tooltip.toLowerCase().includes(lowerSearch) ||
+              $t(tooltip).toLowerCase().includes(lowerSearch)
             )
           }),
         ] as const,
@@ -69,11 +71,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <div class={cn("flex w-full flex-col gap-2", className)} {...props}>
   <div class="flex justify-end">
     <InputGroup.Root class="w-60">
-      <InputGroup.Input bind:value={search} placeholder="Search..." />
+      <InputGroup.Input bind:value={search} placeholder={$t("Search...")} />
       <InputGroup.Addon align="inline-end">
         <InputGroup.Button onclick={() => (search = "")} size="icon-xs">
           <XIcon />
-          <span class="sr-only">Clear Search</span>
+          <span class="sr-only">{$t("Clear Search")}</span>
         </InputGroup.Button>
       </InputGroup.Addon>
     </InputGroup.Root>
@@ -85,7 +87,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     {#each filteredKeycodes as [category, keycodes] (category)}
       {#if keycodes.length > 0}
         <Accordion.Item value={category}>
-          <Accordion.Trigger>{category}</Accordion.Trigger>
+          <Accordion.Trigger>{$t(category)}</Accordion.Trigger>
           <Accordion.Content class="flex flex-wrap text-sm">
             {#each keycodes as keycode (keycode)}
               <div class="p-0.5" style={unitToStyle()}>

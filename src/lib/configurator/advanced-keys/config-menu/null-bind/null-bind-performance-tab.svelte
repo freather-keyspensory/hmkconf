@@ -18,6 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import Switch from "$lib/components/switch.svelte"
   import { actuationQueryContext } from "$lib/configurator/queries/actuation-query.svelte"
   import { distanceToUnit, SWITCH_DISTANCE_UNIT } from "$lib/distance"
+  import { t } from "$lib/i18n"
   import {
     DEFAULT_ACTUATION_POINT,
     DEFAULT_RT_SENSITIVITY,
@@ -78,7 +79,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     {disabled}
     description="Enable Rapid Trigger to compare keys only when Rapid Trigger registers a key press. Additional Rapid Trigger options are available in the Performance tab."
     id="rapid-trigger"
-    title="Enable Rapid Trigger"
+    title={$t("Enable Rapid Trigger")}
   />
   <DistanceSlider
     bind:committed={
@@ -94,7 +95,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     max={action.bottomOutPoint > 0
       ? distanceToUnit(action.bottomOutPoint)
       : SWITCH_DISTANCE_UNIT}
-    title="Actuation Point"
+    title={$t("Actuation Point")}
   />
   {#if action.bottomOutPoint > 0}
     <DistanceSlider
@@ -105,7 +106,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Set the actuation point at which the key is considered fully pressed."
       {disabled}
       min={optMap(currentActuation?.actuationPoint, distanceToUnit)}
-      title="Bottom Out Point"
+      title={$t("Bottom Out Point")}
     />
   {/if}
 </div>

@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import FixedScrollArea from "$lib/components/fixed-scroll-area.svelte"
   import { KeycodeButton } from "$lib/components/keycode-button"
   import Switch from "$lib/components/switch.svelte"
+  import { t } from "$lib/i18n"
   import { gamepadButtonToKeycode } from "$lib/keycodes/gamepad"
   import { unitToStyle } from "$lib/ui"
   import { cn, type WithoutChildren } from "$lib/utils"
@@ -40,9 +41,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <div class={cn("grid grid-cols-[minmax(0,1fr)_28rem]", className)} {...props}>
   <FixedScrollArea class="flex flex-col gap-4 p-6 pt-2 pr-4">
     <div class="grid text-sm">
-      <span class="font-medium">Configure Controller Bindings</span>
+      <span class="font-medium">{$t("Configure Controller Bindings")}</span>
       <span class="text-muted-foreground">
-        Assign gamepad buttons to your keyboard.
+        {$t("Assign gamepad buttons to your keyboard.")}
       </span>
     </div>
     <div class="flex flex-wrap text-sm">
@@ -74,7 +75,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Allow keyboard inputs to be sent along with gamepad inputs."
       disabled={!options}
       id="keyboard-enabled"
-      title="Enable Keyboard Inputs"
+      title={$t("Enable Keyboard Inputs")}
     />
     <Switch
       bind:checked={
@@ -88,7 +89,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Disable keyboard inputs on keys bound to gamepad buttons."
       disabled={!options || !options.keyboardEnabled}
       id="gamepad-override"
-      title="Gamepad Override"
+      title={$t("Gamepad Override")}
     />
   </FixedScrollArea>
 </div>

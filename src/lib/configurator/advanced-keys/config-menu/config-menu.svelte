@@ -19,6 +19,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { getAdvancedKeyMetadata } from "$lib/configurator/lib/advanced-keys"
   import { advancedKeysQueryContext } from "$lib/configurator/queries/advanced-keys-query.svelte"
   import { macrosQueryContext } from "$lib/configurator/queries/macros-query.svelte"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import AdvancedKeysDeleteDialog from "../advanced-keys-delete-dialog.svelte"
   import ConfigMenuContent from "./config-menu-content.svelte"
@@ -36,14 +37,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 {#if !advancedKeys || !macros}
   <div class="grid size-full place-items-center p-6 text-center">
     <p class="animate-pulse text-2xl font-semibold text-muted-foreground">
-      Loading...
+      {$t("Loading...")}
     </p>
   </div>
 {:else}
   <div class="flex size-full flex-col">
     <div class="flex items-center justify-between gap-4 p-4">
       <div class="font-semibold">
-        {getAdvancedKeyMetadata(version).title}
+        {$t(getAdvancedKeyMetadata(version).title)}
       </div>
       <div class="flex items-center gap-2">
         <AdvancedKeysDeleteDialog
@@ -51,11 +52,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
           advancedKey={advancedKeys[index!]}
         >
           {#snippet child({ props })}
-            <Button size="sm" variant="destructive" {...props}>Delete</Button>
+            <Button size="sm" variant="destructive" {...props}
+              >{$t("Delete")}</Button
+            >
           {/snippet}
         </AdvancedKeysDeleteDialog>
         <Button onclick={() => advancedKeysState.setIndex(null)} size="sm">
-          Done
+          {$t("Done")}
         </Button>
       </div>
     </div>

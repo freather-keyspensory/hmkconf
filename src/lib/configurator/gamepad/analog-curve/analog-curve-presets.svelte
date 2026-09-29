@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { Button } from "$lib/components/ui/button"
   import { analogCurvePresets } from "$lib/configurator/lib/gamepad"
   import { gamepadQueryContext } from "$lib/configurator/queries/gamepad-query.svelte"
+  import { t } from "$lib/i18n"
   import { HMK_MAX_DISTANCE, HMK_MIN_DISTANCE } from "$lib/libhmk"
 
   const gamepadQuery = gamepadQueryContext.get()
@@ -53,7 +54,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
           vector-effect="non-scaling-stroke"
         />
       </svg>
-      {name}
+      {$t(name)}
     </Button>
   {/each}
 </div>

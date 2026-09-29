@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import DistanceSlider from "$lib/components/distance-slider.svelte"
   import FixedScrollArea from "$lib/components/fixed-scroll-area.svelte"
   import Switch from "$lib/components/switch.svelte"
+  import { t } from "$lib/i18n"
   import {
     DEFAULT_ACTUATION_POINT,
     DEFAULT_RT_SENSITIVITY,
@@ -70,7 +71,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         ? "Set the specific distance at which Rapid Trigger activates and deactivates."
         : "Set the specific distance at which a key press and release is registered."}
       {disabled}
-      title="Actuation Point"
+      title={$t("Actuation Point")}
     />
     <DistanceSlider
       bind:committed={
@@ -93,7 +94,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         }
         description="Set the minimum distance change required for Rapid Trigger to register a key release."
         disabled={disabled || !rtEnabled}
-        title="Rapid Trigger Release Sensitivity"
+        title={$t("Rapid Trigger Release Sensitivity")}
       />
     {/if}
   </FixedScrollArea>
@@ -112,7 +113,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Rapid Trigger registers key presses and releases based on changes in key distance rather than absolute position. It activates and deactivates at the actuation point."
       {disabled}
       id="rapid-trigger"
-      title="Enable Rapid Trigger"
+      title={$t("Enable Rapid Trigger")}
     />
 
     <Switch
@@ -127,7 +128,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Configure sensitivity for key presses and releases independently."
       disabled={disabled || !rtEnabled}
       id="separate-rt"
-      title="Separate Press/Release Sensitivity"
+      title={$t("Separate Press/Release Sensitivity")}
     />
     <Switch
       bind:checked={
@@ -141,7 +142,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       description="Deactivates Rapid Trigger only when the key is fully released, instead of at the actuation point."
       disabled={disabled || !rtEnabled}
       id="continuous-rapid-trigger"
-      title="Continuous Rapid Trigger"
+      title={$t("Continuous Rapid Trigger")}
     />
   </FixedScrollArea>
 </div>

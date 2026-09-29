@@ -18,6 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { KeyButton } from "$lib/components/key-button"
   import * as KeycodeButton from "$lib/components/keycode-button"
   import { Button } from "$lib/components/ui/button"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import { HMK_AKType } from "$lib/libhmk/advanced-keys"
   import { unitToStyle } from "$lib/ui"
@@ -45,14 +46,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="flex flex-col gap-2 p-4">
   <div class="flex items-center justify-between gap-4">
-    <div class="font-semibold">{title}</div>
+    <div class="font-semibold">{$t(title)}</div>
     <div class="flex items-center gap-2">
       <Button
         onclick={() => advancedKeysState.createClose()}
         size="sm"
         variant="outline"
       >
-        Cancel
+        {$t("Cancel")}
       </Button>
       <Button
         disabled={!advancedKeys || !keymap || keys.some((key) => key === null)}
@@ -78,16 +79,16 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         }}
         size="sm"
       >
-        Continue
+        {$t("Continue")}
       </Button>
     </div>
   </div>
   <div class="flex flex-col gap-4">
     <div class="grid text-sm">
       <span class="font-medium">
-        {`Select ${numKeys > 1 ? `${numKeys} keys` : `${numKeys} key`} to assign ${title} to.`}
+        {`Select ${numKeys > 1 ? `${numKeys} keys` : `${numKeys} key`} to assign ${$t(title)} to.`}
       </span>
-      <span class="text-muted-foreground">{description}</span>
+      <span class="text-muted-foreground">{$t(description)}</span>
     </div>
     <div class="grid place-items-center">
       <ToggleGroup.Root
@@ -100,7 +101,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       >
         {#each { length: numKeys }, i (i)}
           <div class="flex flex-col items-center text-center text-base">
-            <div class="text-muted-foreground">Key {i + 1}</div>
+            <div class="text-muted-foreground">{$t("Key")} {i + 1}</div>
             <div class="p-0.5" style={unitToStyle()}>
               {#if !advancedKeys || !keymap}
                 <KeycodeButton.Skeleton />
@@ -117,7 +118,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
                         class="border-dashed font-normal text-muted-foreground"
                         {...props}
                       >
-                        <span>Assign</span>
+                        <span>{$t("Assign")}</span>
                       </KeyButton>
                     {/if}
                   {/snippet}

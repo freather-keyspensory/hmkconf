@@ -20,10 +20,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     DKS_ROW_PADDING,
     dynamicKeystrokeHeaders,
   } from "$lib/configurator/lib/advanced-keys"
+  import { t } from "$lib/i18n"
 </script>
 
 <div class="grid place-items-center" style:grid-area="bindings">
-  <span class="text-sm font-medium">Bindings</span>
+  <span class="text-sm font-medium">{$t("Bindings")}</span>
 </div>
 {#each dynamicKeystrokeHeaders as { icon: Icon, tooltip }, i (i)}
   <div class="flex items-center" style:grid-area="icon{i}">
@@ -33,9 +34,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         style="margin-left: {DKS_ROW_PADDING + DKS_ACTION_SIZE / 2}px"
       >
         <Icon class="size-4" />
-        <span class="sr-only">{tooltip}</span>
+        <span class="sr-only">{$t(tooltip)}</span>
       </Tooltip.Trigger>
-      <Tooltip.Content>{tooltip}</Tooltip.Content>
+      <Tooltip.Content>{$t(tooltip)}</Tooltip.Content>
     </Tooltip.Root>
   </div>
 {/each}

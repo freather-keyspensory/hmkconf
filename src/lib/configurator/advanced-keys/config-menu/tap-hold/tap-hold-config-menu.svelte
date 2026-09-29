@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import FixedScrollArea from "$lib/components/fixed-scroll-area.svelte"
   import { KeycodeButton } from "$lib/components/keycode-button"
   import * as Tabs from "$lib/components/ui/tabs"
+  import { t } from "$lib/i18n"
   import type { HMK_AKTapHold } from "$lib/libhmk/advanced-keys"
   import { Keycode } from "$lib/libhmk/keycodes"
   import { unitToStyle } from "$lib/ui"
@@ -40,9 +41,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <div class="grid text-sm">
-    <span class="font-medium">Configure Tap-Hold Bindings</span>
+    <span class="font-medium">{$t("Configure Tap-Hold Bindings")}</span>
     <span class="text-muted-foreground">
-      Assign bindings for tap and hold actions of the key.
+      {$t("Assign bindings for tap and hold actions of the key.")}
     </span>
   </div>
   <div class="grid place-items-center">
@@ -52,7 +53,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       type="single"
     >
       <div class="flex flex-col items-center text-center text-base">
-        <div class="text-muted-foreground">Tap</div>
+        <div class="text-muted-foreground">{$t("Tap")}</div>
         <div class="p-0.5" style={unitToStyle()}>
           <ToggleGroup.Item
             oncontextmenu={(e) => {
@@ -71,7 +72,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         </div>
       </div>
       <div class="flex flex-col items-center text-center text-base">
-        <div class="text-muted-foreground">Hold</div>
+        <div class="text-muted-foreground">{$t("Hold")}</div>
         <div class="p-0.5" style={unitToStyle()}>
           <ToggleGroup.Item
             oncontextmenu={(e) => {
@@ -95,9 +96,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <Tabs.Root value="bindings">
     <Tabs.List>
-      <Tabs.Trigger value="bindings">Bindings</Tabs.Trigger>
-      <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
-      <Tabs.Trigger value="key-tester">Key Tester</Tabs.Trigger>
+      <Tabs.Trigger value="bindings">{$t("Bindings")}</Tabs.Trigger>
+      <Tabs.Trigger value="advanced">{$t("Advanced")}</Tabs.Trigger>
+      <Tabs.Trigger value="key-tester">{$t("Key Tester")}</Tabs.Trigger>
     </Tabs.List>
     <div class="p-2">
       <Tabs.Content value="bindings">

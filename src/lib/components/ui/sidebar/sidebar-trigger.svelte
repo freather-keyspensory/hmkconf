@@ -1,6 +1,7 @@
 <script lang="ts">
   import PanelLeftIcon from "@lucide/svelte/icons/panel-left"
   import { Button } from "$lib/components/ui/button/index.js"
+  import { t } from "$lib/i18n"
   import { cn } from "$lib/utils.js"
   import type { ComponentProps } from "svelte"
   import { useSidebar } from "./context.svelte.js"
@@ -32,5 +33,5 @@
   {...restProps}
 >
   <PanelLeftIcon />
-  <span class="sr-only">Toggle Sidebar</span>
+  <span class="sr-only">{$t("Toggle Sidebar")}</span>
 </Button>

@@ -16,6 +16,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
   import * as Dialog from "$lib/components/ui/dialog"
+  import { t } from "$lib/i18n"
   import {
     defaultAdvancedKey,
     type HMK_AdvancedKey,
@@ -47,15 +48,17 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <Dialog.Trigger {...props}>{@render children?.()}</Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Remove this {title} binding?</Dialog.Title>
+      <Dialog.Title
+        >{$t("Remove this")} {$t(title)} {$t("binding?")}</Dialog.Title
+      >
       <Dialog.Description>
-        Are you sure you want to remove this binding?
+        {$t("Are you sure you want to remove this binding?")}
       </Dialog.Description>
     </Dialog.Header>
     <Dialog.Footer>
       <Dialog.Close>
         {#snippet child({ props })}
-          <Button size="sm" variant="outline" {...props}>Cancel</Button>
+          <Button size="sm" variant="outline" {...props}>{$t("Cancel")}</Button>
         {/snippet}
       </Dialog.Close>
       <Dialog.Close
@@ -70,7 +73,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         }}
       >
         {#snippet child({ props })}
-          <Button size="sm" variant="destructive" {...props}>Remove</Button>
+          <Button size="sm" variant="destructive" {...props}
+            >{$t("Remove")}</Button
+          >
         {/snippet}
       </Dialog.Close>
     </Dialog.Footer>

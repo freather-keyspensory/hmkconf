@@ -14,18 +14,22 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
-  import { base } from "$app/paths"
   import { HouseIcon } from "@lucide/svelte"
+  import { base } from "$app/paths"
   import Footer from "$lib/components/footer.svelte"
   import { Button } from "$lib/components/ui/button"
+  import { t } from "$lib/i18n"
 </script>
 
 <main class="grid min-h-svh place-items-center px-6 py-24">
   <div class="text-center">
-    <h1 class="text-5xl font-semibold tracking-tight">Page not found</h1>
+    <h1 class="text-5xl font-semibold tracking-tight">
+      {$t("Page not found")}
+    </h1>
     <div class="mt-6 grid place-items-center">
       <Button href={base + "/"} size="lg">
-        <HouseIcon /> Go Back Home
+        <HouseIcon />
+        {$t("Go Back Home")}
       </Button>
     </div>
   </div>

@@ -15,6 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import { MoonIcon, SunIcon } from "@lucide/svelte"
+  import { t } from "$lib/i18n"
   import { resetMode, setMode } from "mode-watcher"
   import { buttonVariants } from "./ui/button"
   import * as DropdownMenu from "./ui/dropdown-menu"
@@ -30,12 +31,17 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     <MoonIcon
       class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 !transition-all dark:scale-100 dark:rotate-0"
     />
-    <span class="sr-only">Toggle theme</span>
+    <span class="sr-only">{$t("Toggle theme")}</span>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content align="end">
-    <DropdownMenu.Item onclick={() => setMode("light")}>Light</DropdownMenu.Item
+    <DropdownMenu.Item onclick={() => setMode("light")}
+      >{$t("Light")}</DropdownMenu.Item
     >
-    <DropdownMenu.Item onclick={() => setMode("dark")}>Dark</DropdownMenu.Item>
-    <DropdownMenu.Item onclick={() => resetMode()}>System</DropdownMenu.Item>
+    <DropdownMenu.Item onclick={() => setMode("dark")}
+      >{$t("Dark")}</DropdownMenu.Item
+    >
+    <DropdownMenu.Item onclick={() => resetMode()}
+      >{$t("System")}</DropdownMenu.Item
+    >
   </DropdownMenu.Content>
 </DropdownMenu.Root>

@@ -16,6 +16,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <script lang="ts">
   import CommitSlider from "$lib/components/commit-slider.svelte"
   import Switch from "$lib/components/switch.svelte"
+  import { t } from "$lib/i18n"
   import {
     MAX_TAPPING_TERM,
     MIN_TAPPING_TERM,
@@ -43,7 +44,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     }
     description="Immediately perform the hold action if another non-Tap-Hold key is pressed."
     id="hold-on-other-key-press"
-    title="Hold on Other Key Press"
+    title={$t("Hold on Other Key Press")}
   />
   <CommitSlider
     bind:committed={
@@ -55,7 +56,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     min={MIN_TAPPING_TERM}
     max={MAX_TAPPING_TERM}
     step={10}
-    title="Tapping Term"
+    title={$t("Tapping Term")}
   />
   <TickRateSlider />
 </div>

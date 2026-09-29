@@ -22,6 +22,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import * as Tabs from "$lib/components/ui/tabs"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { nullBindBehaviorMetadata } from "$lib/configurator/lib/advanced-keys"
+  import { t } from "$lib/i18n"
   import {
     DEFAULT_BOTTOM_OUT_POINT,
     type HMK_AKNullBind,
@@ -36,10 +37,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <div class="grid text-sm text-wrap">
-    <span class="font-medium">Configure Null Bind Resolution Behavior</span>
+    <span class="font-medium"
+      >{$t("Configure Null Bind Resolution Behavior")}</span
+    >
     <span class="text-muted-foreground">
-      Select how Null Bind resolves key presses when both keys are pressed
-      simultaneously.
+      {$t(
+        "Select how Null Bind resolves key presses when both keys are pressed simultaneously.",
+      )}
     </span>
   </div>
   <RadioGroup.Root
@@ -52,13 +56,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       <div class="flex items-center gap-3">
         <RadioGroup.Item id={String(behavior)} value={String(behavior)} />
         <div class="flex flex-1 items-center gap-2">
-          <Label class="flex-1" for={String(behavior)}>{title}</Label>
+          <Label class="flex-1" for={String(behavior)}>{$t(title)}</Label>
           <Tooltip.Root>
             <Tooltip.Trigger>
               <InfoIcon class="size-4" />
-              <span class="sr-only">Info</span>
+              <span class="sr-only">{$t("Info")}</span>
             </Tooltip.Trigger>
-            <Tooltip.Content>{description}</Tooltip.Content>
+            <Tooltip.Content>{$t(description)}</Tooltip.Content>
           </Tooltip.Root>
         </div>
       </div>
@@ -75,14 +79,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     }
     description="Enable this option to register both key presses when keys are fully pressed simultaneously, bypassing the resolution behavior."
     id="alternative-fully-pressed-behavior"
-    title="Alternative Fully Pressed Behavior"
+    title={$t("Alternative Fully Pressed Behavior")}
   />
 </FixedScrollArea>
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <Tabs.Root value="performance">
     <Tabs.List>
-      <Tabs.Trigger value="performance">Performance</Tabs.Trigger>
-      <Tabs.Trigger value="key-tester">Key Tester</Tabs.Trigger>
+      <Tabs.Trigger value="performance">{$t("Performance")}</Tabs.Trigger>
+      <Tabs.Trigger value="key-tester">{$t("Key Tester")}</Tabs.Trigger>
     </Tabs.List>
     <div class="p-2">
       <Tabs.Content value="performance">

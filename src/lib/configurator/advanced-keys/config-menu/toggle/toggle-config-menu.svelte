@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import FixedScrollArea from "$lib/components/fixed-scroll-area.svelte"
   import { KeycodeButton } from "$lib/components/keycode-button"
   import * as Tabs from "$lib/components/ui/tabs"
+  import { t } from "$lib/i18n"
   import type { HMK_AKToggle } from "$lib/libhmk/advanced-keys"
   import { Keycode } from "$lib/libhmk/keycodes"
   import { unitToStyle } from "$lib/ui"
@@ -40,9 +41,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <div class="grid text-sm">
-    <span class="font-medium">Configure Toggle Binding</span>
+    <span class="font-medium">{$t("Configure Toggle Binding")}</span>
     <span class="text-muted-foreground">
-      Assign a binding for the toggle action of the key.
+      {$t("Assign a binding for the toggle action of the key.")}
     </span>
   </div>
   <div class="grid place-items-center text-base">
@@ -67,9 +68,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <Tabs.Root value="bindings">
     <Tabs.List>
-      <Tabs.Trigger value="bindings">Bindings</Tabs.Trigger>
-      <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
-      <Tabs.Trigger value="key-tester">Key Tester</Tabs.Trigger>
+      <Tabs.Trigger value="bindings">{$t("Bindings")}</Tabs.Trigger>
+      <Tabs.Trigger value="advanced">{$t("Advanced")}</Tabs.Trigger>
+      <Tabs.Trigger value="key-tester">{$t("Key Tester")}</Tabs.Trigger>
     </Tabs.List>
     <div class="p-2">
       <Tabs.Content value="bindings">

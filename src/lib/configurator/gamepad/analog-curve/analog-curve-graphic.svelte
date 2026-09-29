@@ -19,6 +19,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     CURVE_VIEW_HEIGHT,
     CURVE_VIEW_WIDTH,
   } from "$lib/configurator/lib/gamepad"
+  import { t } from "$lib/i18n"
   import { analogCurveStateContext } from "./context.svelte"
 
   const { viewCurve } = $derived(analogCurveStateContext.get())
@@ -51,10 +52,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   >
     <Tooltip.Root>
       <Tooltip.Trigger class="m-2 text-sm text-muted-foreground">
-        Key Start Deadzone
+        {$t("Key Start Deadzone")}
       </Tooltip.Trigger>
       <Tooltip.Content class="max-w-sm text-wrap">
-        No gamepad analog input will be sent.
+        {$t("No gamepad analog input will be sent.")}
       </Tooltip.Content>
     </Tooltip.Root>
   </div>
@@ -64,11 +65,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   >
     <Tooltip.Root>
       <Tooltip.Trigger class="m-2 text-sm text-muted-foreground">
-        Key End Deadzone
+        {$t("Key End Deadzone")}
       </Tooltip.Trigger>
       <Tooltip.Content class="max-w-sm text-wrap">
-        Maximum gamepad analog input will be sent. For joysticks, the angle will
-        snap to the nearest 45 degree, functioning similar to a D-Pad.
+        {$t(
+          "Maximum gamepad analog input will be sent. For joysticks, the angle will snap to the nearest 45 degree, functioning similar to a D-Pad.",
+        )}
       </Tooltip.Content>
     </Tooltip.Root>
   </div>

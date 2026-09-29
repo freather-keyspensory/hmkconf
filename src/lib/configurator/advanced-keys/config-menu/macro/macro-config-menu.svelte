@@ -24,6 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     getMacroSequence,
   } from "$lib/configurator/lib/advanced-keys"
   import { macrosQueryContext } from "$lib/configurator/queries/macros-query.svelte"
+  import { t } from "$lib/i18n"
   import type { HMK_AKMacro } from "$lib/libhmk/advanced-keys"
   import { Keycode } from "$lib/libhmk/keycodes"
   import { HMK_MACRO_NODE_NONE, HMK_MacroAction } from "$lib/libhmk/macro"
@@ -55,10 +56,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <div class="grid text-sm">
-    <span class="font-medium">Configure Macro Actions</span>
+    <span class="font-medium">{$t("Configure Macro Actions")}</span>
     <span class="text-muted-foreground">
-      Create a sequence of actions to be triggered when the key is pressed.
-      Assign bindings for each action using the menu on the right.
+      {$t(
+        "Create a sequence of actions to be triggered when the key is pressed. Assign bindings for each action using the menu on the right.",
+      )}
     </span>
   </div>
   <div class="flex flex-col gap-4">
@@ -94,13 +96,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         size="sm"
         variant="outline"
       >
-        <PlusIcon /> Add
+        <PlusIcon />
+        {$t("Add")}
       </Button>
     </div>
     {#if macroSequence.length === 0}
       <Empty.Root class="border border-dashed">
         <Empty.Header>
-          <Empty.Description>No macro actions...</Empty.Description>
+          <Empty.Description>{$t("No macro actions...")}</Empty.Description>
         </Empty.Header>
       </Empty.Root>
     {:else}
@@ -125,9 +128,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <FixedScrollArea class="flex flex-col gap-4 p-4 pt-0">
   <Tabs.Root value="bindings">
     <Tabs.List>
-      <Tabs.Trigger value="bindings">Bindings</Tabs.Trigger>
-      <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
-      <Tabs.Trigger value="key-tester">Key Tester</Tabs.Trigger>
+      <Tabs.Trigger value="bindings">{$t("Bindings")}</Tabs.Trigger>
+      <Tabs.Trigger value="advanced">{$t("Advanced")}</Tabs.Trigger>
+      <Tabs.Trigger value="key-tester">{$t("Key Tester")}</Tabs.Trigger>
     </Tabs.List>
     <div class="p-2">
       <Tabs.Content value="bindings">

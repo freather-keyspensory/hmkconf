@@ -19,6 +19,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import * as KeyTester from "$lib/components/key-tester"
   import Switch from "$lib/components/switch.svelte"
   import { Button } from "$lib/components/ui/button"
+  import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import { isFeatureAvailable } from "$lib/utils"
   import { toast } from "svelte-sonner"
@@ -54,7 +55,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         }
         disabled={demo || !options}
         id="save-bottom-out-threshold"
-        title="Save Bottom Out Threshold"
+        title={$t("Save Bottom Out Threshold")}
         description="Periodically save the per-key bottom-out threshold values after some inactivity to be restored on next boot. The saved values will only be cleared on recalibration. This setting applies globally across all profiles."
       />
     {/if}
@@ -75,7 +76,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       min={0}
       max={(1 << adcResolution) - 1}
       step={10}
-      title="Initial Noise Floor"
+      title={$t("Initial Noise Floor")}
     />
     <CommitSlider
       bind:committed={
@@ -95,7 +96,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       min={0}
       max={(1 << adcResolution) - 1}
       step={10}
-      title="Initial Bottom Out Threshold"
+      title={$t("Initial Bottom Out Threshold")}
     />
     <div class="flex gap-2">
       <Button
@@ -104,18 +105,18 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         size="sm"
         variant="destructive"
       >
-        Recalibrate
+        {$t("Recalibrate")}
       </Button>
       {#if isFeatureAvailable("saveCalibrationThreshold", version)}
         <Button
           disabled={demo}
           onclick={async () => {
             await keyboard.saveCalibrationThreshold()
-            toast.success("Successfully saved calibration threshold.")
+            toast.success($t("Successfully saved calibration threshold."))
           }}
           size="sm"
         >
-          Save Current Threshold
+          {$t("Save Current Threshold")}
         </Button>
       {/if}
     </div>
@@ -123,11 +124,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <FixedScrollArea class="flex flex-col gap-4 p-4">
     <KeyTester.Root>
       <div class="flex flex-col gap-2">
-        <div class="text-sm font-medium">Pressed Keys</div>
+        <div class="text-sm font-medium">{$t("Pressed Keys")}</div>
         <KeyTester.Press class="h-32 w-full" />
       </div>
       <div class="flex flex-col gap-2">
-        <div class="text-sm font-medium">Released Keys</div>
+        <div class="text-sm font-medium">{$t("Released Keys")}</div>
         <KeyTester.Release class="h-32 w-full" />
       </div>
     </KeyTester.Root>

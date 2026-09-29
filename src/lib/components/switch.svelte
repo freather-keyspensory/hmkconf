@@ -15,6 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import { InfoIcon } from "@lucide/svelte"
+  import { t } from "$lib/i18n"
   import { cn, type WithoutChildren } from "$lib/utils"
   import type { HTMLAttributes } from "svelte/elements"
   import { Label } from "./ui/label"
@@ -47,15 +48,15 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <div class={cn("grid gap-1", className)} {...props}>
   <div class="flex items-center gap-2">
     <Switch bind:checked bind:ref {disabled} {id} {onCheckedChange} />
-    <Label for={id}>{title}</Label>
+    <Label for={id}>{$t(title)}</Label>
     {#if tooltip}
       <Tooltip.Root>
         <Tooltip.Trigger>
           <InfoIcon class="size-4" />
-          <span class="sr-only">Info</span>
+          <span class="sr-only">{$t("Info")}</span>
         </Tooltip.Trigger>
         <Tooltip.Content class="max-w-56 text-wrap">
-          {tooltip}
+          {$t(tooltip)}
         </Tooltip.Content>
       </Tooltip.Root>
     {/if}
@@ -67,7 +68,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         disabled && "opacity-50",
       )}
     >
-      {description}
+      {$t(description)}
     </p>
   {/if}
 </div>

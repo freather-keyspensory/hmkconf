@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { SquarePenIcon, TrashIcon } from "@lucide/svelte"
   import * as KeycodeButton from "$lib/components/keycode-button"
   import { Button } from "$lib/components/ui/button"
+  import { t } from "$lib/i18n"
   import { HMK_AKType, type HMK_AdvancedKey } from "$lib/libhmk/advanced-keys"
   import { unitToStyle } from "$lib/ui"
   import { cn, type WithoutChildren } from "$lib/utils"
@@ -132,13 +133,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       variant="outline"
     >
       <SquarePenIcon />
-      <span class="sr-only">Edit</span>
+      <span class="sr-only">{$t("Edit")}</span>
     </Button>
     <AdvancedKeysDeleteDialog {index} {advancedKey}>
       {#snippet child({ props })}
         <Button size="icon" variant="outline" {...props}>
           <TrashIcon />
-          <span class="sr-only">Delete</span>
+          <span class="sr-only">{$t("Delete")}</span>
         </Button>
       {/snippet}
     </AdvancedKeysDeleteDialog>

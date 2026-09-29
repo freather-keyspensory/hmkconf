@@ -14,6 +14,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
+  import { t } from "$lib/i18n"
   import { getKeycodeMetadata } from "$lib/keycodes"
   import type { Snippet } from "svelte"
   import * as Tooltip from "../ui/tooltip"
@@ -42,6 +43,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         </div>
       {/snippet}
     </Tooltip.Trigger>
-    <Tooltip.Content class="max-w-56 text-wrap">{tooltip}</Tooltip.Content>
+    <Tooltip.Content class="max-w-56 text-wrap">{$t(tooltip)}</Tooltip.Content>
   </Tooltip.Root>
 {/if}

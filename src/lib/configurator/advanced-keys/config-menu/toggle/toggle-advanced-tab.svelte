@@ -15,6 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import CommitSlider from "$lib/components/commit-slider.svelte"
+  import { t } from "$lib/i18n"
   import {
     MAX_TAPPING_TERM,
     MIN_TAPPING_TERM,
@@ -44,6 +45,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     min={MIN_TAPPING_TERM}
     max={MAX_TAPPING_TERM}
     step={10}
-    title="Tapping Term"
+    title={$t("Tapping Term")}
   />
 </div>

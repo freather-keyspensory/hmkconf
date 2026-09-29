@@ -21,6 +21,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import * as ToggleGroupUI from "$lib/components/ui/toggle-group"
   import { macroActions } from "$lib/configurator/lib/advanced-keys"
   import { macrosQueryContext } from "$lib/configurator/queries/macros-query.svelte"
+  import { t } from "$lib/i18n"
   import type { HMK_AKMacro } from "$lib/libhmk/advanced-keys"
   import { Keycode } from "$lib/libhmk/keycodes"
   import { HMK_MAX_MACRO_DELAY } from "$lib/libhmk/macro"
@@ -80,7 +81,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <div
     class="grid flex-1 auto-rows-[1fr] grid-cols-[max-content_1fr] items-center gap-2 p-2 pl-3 text-sm font-medium"
   >
-    <span>Action</span>
+    <span>{$t("Action")}</span>
     <ToggleGroupUI.Root
       bind:value={
         () => String(macroNode.action),
@@ -101,7 +102,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         </ToggleGroupUI.Item>
       {/each}
     </ToggleGroupUI.Root>
-    <span>Delay</span>
+    <span>{$t("Delay")}</span>
     <div class="flex items-center gap-2">
       <Input
         bind:value={
@@ -138,7 +139,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
       variant="outline"
     >
       <TrashIcon />
-      <span class="sr-only">Delete</span>
+      <span class="sr-only">{$t("Delete")}</span>
     </Button>
   </div>
 </div>

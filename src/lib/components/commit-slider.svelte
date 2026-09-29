@@ -14,6 +14,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
+  import { t } from "$lib/i18n"
   import { cn, type WithoutChildren } from "$lib/utils"
   import type { HTMLAttributes } from "svelte/elements"
   import { Slider } from "./ui/slider"
@@ -54,10 +55,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <div class={cn("flex flex-col", className)} {...props}>
   <div class={cn("grid text-sm text-wrap", disabled && "opacity-50")}>
     <span class="font-medium">
-      {title}: {display?.(value) ?? value}
+      {$t(title)}: {display?.(value) ?? value}
     </span>
     {#if description}
-      <span class="text-muted-foreground">{description}</span>
+      <span class="text-muted-foreground">{$t(description)}</span>
     {/if}
   </div>
   <Slider

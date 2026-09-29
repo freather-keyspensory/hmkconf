@@ -15,6 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import * as Sidebar from "$lib/components/ui/sidebar"
+  import { t } from "$lib/i18n"
   import { Tabs } from "bits-ui"
   import { globalStateContext } from "../context.svelte"
   import { sidebarTabGroups } from "../lib/layout"
@@ -25,7 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 {#each sidebarTabGroups as { group, tabs } (group)}
   <Sidebar.Group>
     <Sidebar.GroupLabel class="truncate">
-      {group}
+      {$t(group)}
     </Sidebar.GroupLabel>
     <Sidebar.Menu>
       {#each tabs as { label, value, icon: Icon } (value)}
@@ -34,11 +35,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
             {#snippet child({ props })}
               <Sidebar.MenuButton
                 isActive={tab === value}
-                tooltipContent={label}
+                tooltipContent={$t(label)}
                 {...props}
               >
                 <Icon />
-                <span>{label}</span>
+                <span>{$t(label)}</span>
               </Sidebar.MenuButton>
             {/snippet}
           </Tabs.Trigger>

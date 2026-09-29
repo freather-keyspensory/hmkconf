@@ -16,10 +16,14 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <script lang="ts">
   import { base } from "$app/paths"
   import { Toaster } from "$lib/components/ui/sonner"
+  import { initializeLanguage, t } from "$lib/i18n"
+  import { onMount } from "svelte"
   import "../app.css"
   import "@fontsource-variable/geist/wght.css"
   import "@fontsource-variable/geist-mono/wght.css"
   import { ModeWatcher } from "mode-watcher"
+
+  onMount(initializeLanguage)
 
   let { children } = $props()
 </script>
@@ -28,10 +32,20 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <title>hmkconf</title>
   <meta
     name="description"
-    content="A web-based configurator for libhmk keyboards"
+    content={$t("A web-based configurator for libhmk keyboards")}
   />
-  <link rel="icon" href={base + "/favicon.ico"} type="image/x-icon" sizes="48x48" />
-  <link rel="icon" href={base + "/icon0.svg"} type="image/svg+xml" sizes="any" />
+  <link
+    rel="icon"
+    href={base + "/favicon.ico"}
+    type="image/x-icon"
+    sizes="48x48"
+  />
+  <link
+    rel="icon"
+    href={base + "/icon0.svg"}
+    type="image/svg+xml"
+    sizes="any"
+  />
   <link rel="icon" href={base + "/icon1.png"} type="image/png" sizes="96x96" />
   <link
     rel="apple-touch-icon"

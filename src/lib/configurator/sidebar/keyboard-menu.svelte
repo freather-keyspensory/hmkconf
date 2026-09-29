@@ -14,15 +14,16 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
-  import { base } from "$app/paths"
   import {
     CableIcon,
     ChevronsUpDownIcon,
     KeyboardIcon,
     LogOutIcon,
   } from "@lucide/svelte"
+  import { base } from "$app/paths"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Sidebar from "$lib/components/ui/sidebar"
+  import { t } from "$lib/i18n"
   import { displayUInt16 } from "$lib/integer"
   import { keyboardContext } from "$lib/keyboard"
 
@@ -68,7 +69,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
             {#snippet child({ props })}
               <a href={base + "/"} {...props}>
                 <LogOutIcon class="size-4" />
-                Exit Demo
+                {$t("Exit Demo")}
               </a>
             {/snippet}
           </DropdownMenu.Item>
@@ -78,7 +79,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
             onSelect={() => keyboard.forget()}
           >
             <CableIcon class="size-4" />
-            Disconnect
+            {$t("Disconnect")}
           </DropdownMenu.Item>
         {/if}
       </DropdownMenu.Content>
