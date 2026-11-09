@@ -63,6 +63,8 @@ export type KeyboardState = {
 }
 
 export type KeyboardAction = {
+  getPhysicalLayout?(): Promise<number>
+  setPhysicalLayout?(layout: number): Promise<number>
   disconnect(): Promise<void>
   forget(): Promise<void>
 

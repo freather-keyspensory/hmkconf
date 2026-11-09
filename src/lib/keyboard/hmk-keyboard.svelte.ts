@@ -19,6 +19,7 @@ import {
   HMK_DEVICE_USAGE_PAGE,
   HMK_FIRMWARE_MIN_VERSION,
 } from "$lib/libhmk"
+import { HMK_Command } from "$lib/libhmk/commands"
 import {
   getActuationMap,
   setActuationMap,
@@ -144,6 +145,23 @@ class HMKKeyboard implements Keyboard {
   setCalibration(params: SetCalibrationParams) {
     return setCalibration(this.commander, params)
   }
+  async getPhysicalLayout() {
+    return (
+      await this.commander.sendCommand({
+        command: HMK_Command.GET_PHYSICAL_LAYOUT,
+      })
+    ).getUint8(0)
+  }
+
+  async setPhysicalLayout(layout: number) {
+    return (
+      await this.commander.sendCommand({
+        command: HMK_Command.SET_PHYSICAL_LAYOUT,
+        payload: [layout],
+      })
+    ).getUint8(0)
+  }
+
   getProfile() {
     return getProfile(this.commander)
   }

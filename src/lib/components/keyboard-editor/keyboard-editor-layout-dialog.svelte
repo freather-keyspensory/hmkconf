@@ -18,6 +18,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { persistedStateContext } from "$lib/configurator/context.svelte"
   import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
+  import { onMount } from "svelte"
   import Switch from "../switch.svelte"
   import { buttonVariants } from "../ui/button"
   import { Label } from "../ui/label"
@@ -26,7 +27,53 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
   const persistedState = persistedStateContext.get()
   const { layoutOptions } = $derived(persistedState.current)
-  const { labels } = keyboardContext.get().metadata.layout
+  const keyboard = keyboardContext.get()
+  const { labels } = keyboard.metadata.layout
+  const physicalOption = keyboard.metadata.physicalLayoutOption
+  let ready = $state(physicalOption === undefined)
+  let busy = $state(false)
+  let error = $state("")
+
+  onMount(() => {
+    if (physicalOption === undefined) return
+    if (!keyboard.getPhysicalLayout || !keyboard.setPhysicalLayout) {
+      error = "This connection cannot change the physical layout."
+      return
+    }
+    keyboard
+      .getPhysicalLayout()
+      .then((value) => {
+        const label = labels[physicalOption]
+        if (!Array.isArray(label) || value >= label.length - 1) {
+          throw new Error("Invalid physical layout received from keyboard.")
+        }
+        persistedState.current.layoutOptions[physicalOption] = value
+        ready = true
+      })
+      .catch((err) => {
+        error = String(err)
+      })
+  })
+
+  async function selectLayout(index: number, value: string) {
+    if (index !== physicalOption) {
+      persistedState.current.layoutOptions[index] = Number(value)
+      return
+    }
+    if (!ready || busy || !keyboard.setPhysicalLayout) return
+    busy = true
+    error = ""
+    try {
+      const selected = await keyboard.setPhysicalLayout(Number(value))
+      if (selected !== Number(value))
+        throw new Error("Keyboard rejected the layout.")
+      persistedState.current.layoutOptions[index] = selected
+    } catch (err) {
+      error = String(err)
+    } finally {
+      busy = false
+    }
+  }
 </script>
 
 <Popover.Root>
@@ -35,6 +82,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     <span class="sr-only">{$t("Configure Layout")}</span>
   </Popover.Trigger>
   <Popover.Content align="end" class="flex flex-col gap-4">
+    {#if error}<p role="alert" class="text-sm text-destructive">{error}</p>{/if}
     {#each labels as label, i (i)}
       {#if typeof label === "string"}
         <Switch
@@ -53,8 +101,11 @@ this program. If not, see <https://www.gnu.org/licenses/>.
           <Select.Root
             bind:value={
               () => String(layoutOptions[i]),
-              (v) => (persistedState.current.layoutOptions[i] = Number(v))
+              (v) => {
+                void selectLayout(i, v)
+              }
             }
+            disabled={i === physicalOption && (!ready || busy)}
             type="single"
           >
             <Select.Trigger id={label[0]} class="w-full" size="sm">

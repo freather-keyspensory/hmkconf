@@ -95,6 +95,7 @@ export type KeyboardLayout = z.infer<typeof keyboardLayoutSchema>
 
 export const keyboardMetadataSchema = z
   .object({
+    physicalLayoutOption: z.int().min(0).optional(),
     name: z.string(),
     vendorId: uint16HexSchema,
     productId: uint16HexSchema,
