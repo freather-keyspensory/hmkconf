@@ -15,6 +15,7 @@
 
 import { DataViewReader } from "$lib/data-view-reader"
 import { uint32ToUInt8s } from "$lib/integer"
+import { fixedCinqueLayout } from "$lib/keyboard/cinque-layout"
 import type { Commander } from "$lib/keyboard/commander"
 import { keyboardMetadataSchema } from "$lib/keyboard/metadata"
 import z from "zod"
@@ -55,7 +56,9 @@ export async function getMetadata(commander: Commander) {
   const metadataStr = await new Response(decompressed).text()
 
   try {
-    return keyboardMetadataSchema.parse(JSON.parse(metadataStr))
+    return fixedCinqueLayout(
+      keyboardMetadataSchema.parse(JSON.parse(metadataStr)),
+    )
   } catch (err) {
     if (err instanceof SyntaxError) {
       throw new Error("The keyboard metadata is not a valid JSON.")

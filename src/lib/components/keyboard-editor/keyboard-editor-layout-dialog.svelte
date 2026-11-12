@@ -76,51 +76,57 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   }
 </script>
 
-<Popover.Root>
-  <Popover.Trigger class={buttonVariants({ size: "icon", variant: "outline" })}>
-    <WrenchIcon />
-    <span class="sr-only">{$t("Configure Layout")}</span>
-  </Popover.Trigger>
-  <Popover.Content align="end" class="flex flex-col gap-4">
-    {#if error}<p role="alert" class="text-sm text-destructive">{error}</p>{/if}
-    {#each labels as label, i (i)}
-      {#if typeof label === "string"}
-        <Switch
-          bind:checked={
-            () => layoutOptions[i] === 1,
-            (v) => (persistedState.current.layoutOptions[i] = v ? 1 : 0)
-          }
-          id={$t(label)}
-          title={$t(label)}
-        />
-      {:else}
-        <div class="flex flex-col gap-1.5">
-          <div class="flex">
-            <Label for={label[0]}>{label[0]}</Label>
-          </div>
-          <Select.Root
-            bind:value={
-              () => String(layoutOptions[i]),
-              (v) => {
-                void selectLayout(i, v)
-              }
+{#if labels.length > 0}
+  <Popover.Root>
+    <Popover.Trigger
+      class={buttonVariants({ size: "icon", variant: "outline" })}
+    >
+      <WrenchIcon />
+      <span class="sr-only">{$t("Configure Layout")}</span>
+    </Popover.Trigger>
+    <Popover.Content align="end" class="flex flex-col gap-4">
+      {#if error}<p role="alert" class="text-sm text-destructive">
+          {error}
+        </p>{/if}
+      {#each labels as label, i (i)}
+        {#if typeof label === "string"}
+          <Switch
+            bind:checked={
+              () => layoutOptions[i] === 1,
+              (v) => (persistedState.current.layoutOptions[i] = v ? 1 : 0)
             }
-            disabled={i === physicalOption && (!ready || busy)}
-            type="single"
-          >
-            <Select.Trigger id={label[0]} class="w-full" size="sm">
-              <span class="flex items-center gap-2">
-                {label[layoutOptions[i] + 1]}
-              </span>
-            </Select.Trigger>
-            <Select.Content>
-              {#each label.slice(1) as option, j (j)}
-                <Select.Item value={String(j)}>{option}</Select.Item>
-              {/each}
-            </Select.Content>
-          </Select.Root>
-        </div>
-      {/if}
-    {/each}
-  </Popover.Content>
-</Popover.Root>
+            id={$t(label)}
+            title={$t(label)}
+          />
+        {:else}
+          <div class="flex flex-col gap-1.5">
+            <div class="flex">
+              <Label for={label[0]}>{label[0]}</Label>
+            </div>
+            <Select.Root
+              bind:value={
+                () => String(layoutOptions[i]),
+                (v) => {
+                  void selectLayout(i, v)
+                }
+              }
+              disabled={i === physicalOption && (!ready || busy)}
+              type="single"
+            >
+              <Select.Trigger id={label[0]} class="w-full" size="sm">
+                <span class="flex items-center gap-2">
+                  {label[layoutOptions[i] + 1]}
+                </span>
+              </Select.Trigger>
+              <Select.Content>
+                {#each label.slice(1) as option, j (j)}
+                  <Select.Item value={String(j)}>{option}</Select.Item>
+                {/each}
+              </Select.Content>
+            </Select.Root>
+          </div>
+        {/if}
+      {/each}
+    </Popover.Content>
+  </Popover.Root>
+{/if}
