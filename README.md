@@ -10,7 +10,20 @@ The beta runs on GitHub Pages. To reproduce the static build, run `npm ci`, `npm
 
 Run `npm run dev` and open `/hmkconf/unified/` on the local server. The original HMK configurator stays at `/hmkconf/`; the earlier interaction prototypes, including firmware planning, stay at `/hmkconf/unified/lab/?demo=true`. The lab is not a list of supported hardware features.
 
-The workspace opens a single detected keyboard and shows a chooser when several are available. Use **Change keyboard** to switch. Choose new USB devices once in the browser. The Mac local server also discovers connected Bluetooth keyboards that expose ZMK Studio using CoreBluetooth and the Swift command-line tools. On the public beta, choose **Bluetooth · ZMK Studio** to open the browser picker. If your keyboard is missing, enter its exact name from Bluetooth settings and choose **Find this keyboard**. The browser cannot list the computer’s Bluetooth connections. The workspace lists a Bluetooth keyboard once it opens a Studio session and drops it when the session disconnects.
+The workspace opens a single detected keyboard and shows a chooser when several are available. Use **Change keyboard** to switch. Choose new USB devices once in the browser. The Mac local server also discovers connected Bluetooth keyboards that expose ZMK Studio using CoreBluetooth and the Swift command-line tools. On the public beta, choose **Bluetooth · ZMK Studio** to open the browser picker. If your keyboard is advertising under a different service, enter its exact Bluetooth name and choose **Find this keyboard**. A keyboard that stops advertising once connected may stay invisible even by name. For that case, use **USB serial · ZMK Studio** on the public beta or the local configurator over Bluetooth on macOS. The browser cannot list the computer’s Bluetooth connections. The workspace lists a Bluetooth keyboard once it opens a Studio session and drops it when the session disconnects.
+
+### Local Bluetooth on macOS
+
+On a Mac with Node.js, npm and the Xcode Command Line Tools installed, clone the beta and start its local configurator:
+
+```sh
+git clone --branch unified-beta https://github.com/freather-keyspensory/hmkconf.git
+cd hmkconf
+npm ci
+npm run dev -- --host 127.0.0.1 --port 4176 --strictPort
+```
+
+Keep that terminal open. Connect the keyboard in macOS Bluetooth settings, then open [the local configurator](http://127.0.0.1:4176/hmkconf/unified/). It reads Studio keyboards already connected to this Mac. The **Open local configurator** link in the public beta opens this same address.
 
 ### Local firmware builds
 

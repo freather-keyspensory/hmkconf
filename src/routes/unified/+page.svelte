@@ -54,6 +54,8 @@
   let boards = $state.raw<FoundKeyboard[]>([])
   let nativeBluetooth = $state(false)
   let bluetoothName = $state('')
+  let bluetoothHelp = $state(false)
+  let hostedOnMac = $state(false)
   let current = $state<string>()
   let opening = $state.raw<FoundKeyboard>()
   const keymapLoad = $derived<{ ready: boolean; notice?: string; activity?: string; readKiB?: number; retry?: () => void } | undefined>(
@@ -128,6 +130,8 @@
     if (new URLSearchParams(location.search).get('tool') === 'modules') active = 'extensions'
     if (new URLSearchParams(location.search).get('tool') === 'bindings') active = 'bindings'
     mounted = true
+    hostedOnMac = /Mac/.test(navigator.platform) && navigator.maxTouchPoints < 2 &&
+      !['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)
     foreground = !document.hidden
     discovery = discoverKeyboards(inventory)
     hardware = { hid: 'hid' in navigator, serial: 'serial' in navigator, bluetooth: 'bluetooth' in navigator }
@@ -227,10 +231,12 @@
       const board = await requestKeyboard(kind, exactName)
       if (board) {
         await openBoard(board)
-        if (current === board.key) bluetoothName = ''
+        if (current === board.key) { bluetoothName = ''; bluetoothHelp = false }
       }
     } catch (error) {
-      if (!(error instanceof DOMException && error.name === 'NotFoundError')) message = String(error)
+      if (error instanceof DOMException && error.name === 'NotFoundError') {
+        if (kind === 'bluetooth') bluetoothHelp = true
+      } else message = String(error)
     } finally { choosing = false }
   }
 </script>
@@ -253,16 +259,29 @@
       {/if}
     {:else}
       <Button variant="outline" disabled={busy || !hardware.bluetooth || !Studio} onclick={() => connect('bluetooth')}>Bluetooth · ZMK Studio</Button>
-      {#if hardware.bluetooth}
-        <details class="text-sm">
+      {#if hardware.bluetooth || hostedOnMac}
+        <details class="text-sm" bind:open={bluetoothHelp}>
           <summary class="cursor-pointer text-muted-foreground">{$t('Keyboard missing from Bluetooth picker?')}</summary>
-          <form class="mt-2 grid gap-2" onsubmit={event => { event.preventDefault(); void connect('bluetooth', bluetoothName) }}>
-            <label class="grid gap-1">
-              {$t('Keyboard name from Bluetooth settings')}
-              <input class="h-9 rounded-md border bg-background px-3" bind:value={bluetoothName} autocomplete="off" required />
-            </label>
-            <Button type="submit" variant="outline" disabled={busy || !Studio || !bluetoothName.trim()}>{$t('Find this keyboard')}</Button>
-          </form>
+          <div class="mt-2 grid gap-2">
+            <p>{$t('Some keyboards stop advertising once connected to the computer. The browser may then show an empty list, even when you enter the exact name.')}</p>
+            <p>{$t('To use this site with a cable, connect the keyboard by USB and choose USB serial · ZMK Studio.')}</p>
+            {#if hostedOnMac}
+              <p>{$t('For Bluetooth on a Mac running the local configurator, open it to use the current connection.')}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                <Button href="http://127.0.0.1:4176/hmkconf/unified/" variant="outline" rel="noreferrer">{$t('Open local configurator')}</Button>
+                <a class="underline underline-offset-2" href="https://github.com/freather-keyspensory/hmkconf/blob/unified-beta/README.md#local-bluetooth-on-macos" target="_blank" rel="noreferrer">{$t('Mac setup instructions')}</a>
+              </div>
+            {/if}
+          </div>
+          {#if hardware.bluetooth}
+            <form class="mt-2 grid gap-2" onsubmit={event => { event.preventDefault(); void connect('bluetooth', bluetoothName) }}>
+              <label class="grid gap-1">
+                {$t('Keyboard name from Bluetooth settings')}
+                <input class="h-9 rounded-md border bg-background px-3" bind:value={bluetoothName} autocomplete="off" required />
+              </label>
+              <Button type="submit" variant="outline" disabled={busy || !Studio || !bluetoothName.trim()}>{$t('Find this keyboard')}</Button>
+            </form>
+          {/if}
         </details>
       {/if}
     {/if}
