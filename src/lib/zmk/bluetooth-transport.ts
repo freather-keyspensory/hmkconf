@@ -12,21 +12,32 @@ type Characteristic = EventTarget & {
   writeValueWithoutResponse(data: Uint8Array): Promise<void>
 }
 type Gatt = {
+  readonly connected: boolean
   connect(): Promise<Gatt>
   disconnect(): void
   getPrimaryService(id: string): Promise<{ getCharacteristic(id: string): Promise<Characteristic> }>
 }
-export type StudioBluetoothDevice = EventTarget & { id: string; name?: string; gatt?: Gatt; watchAdvertisements?(options: { signal: AbortSignal }): Promise<void> }
-type Discovery = { requestDevice(options: {acceptAllDevices: boolean; optionalServices: string[]}): Promise<StudioBluetoothDevice>; getDevices?(): Promise<StudioBluetoothDevice[]> }
+export type StudioBluetoothDevice = EventTarget & { id: string; name?: string; gatt?: Gatt }
+type DeviceFilter = { services: string[] } | { name: string }
+type Discovery = { requestDevice(options: { filters: DeviceFilter[]; optionalServices: string[] }): Promise<StudioBluetoothDevice> }
 
 export function studioBluetooth() {
   return (navigator as Navigator & { bluetooth?: Discovery }).bluetooth
 }
 
-export function requestStudioBluetooth() {
+export function requestStudioBluetooth(exactName = '', knownNames: string[] = []) {
   const bluetooth = studioBluetooth()
   if (!bluetooth) throw Error('Web Bluetooth is unavailable in this browser.')
-  return bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: [service] })
+  const name = exactName.trim()
+  // Some Studio keyboards advertise only HID and Battery. Their exact name
+  // can identify them in the chooser before the Studio service is accessible.
+  const filters: DeviceFilter[] = name ? [{ name }] : [{ services: [service] }]
+  if (!name) {
+    for (const known of new Set(knownNames)) {
+      if (known && new TextEncoder().encode(known).length <= 248) filters.push({ name: known })
+    }
+  }
+  return bluetooth.requestDevice({ filters, optionalServices: [service] })
 }
 
 export async function connectBluetooth(selected?: StudioBluetoothDevice): Promise<RpcTransport> {

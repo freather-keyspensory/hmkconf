@@ -52,6 +52,8 @@
   let Studio = $state<typeof import('$lib/zmk/studio-panel.svelte').default>()
   let studio = $state<ReturnType<NonNullable<typeof Studio>>>()
   let boards = $state.raw<FoundKeyboard[]>([])
+  let nativeBluetooth = $state(false)
+  let bluetoothName = $state('')
   let current = $state<string>()
   let opening = $state.raw<FoundKeyboard>()
   const keymapLoad = $derived<{ ready: boolean; notice?: string; activity?: string; readKiB?: number; retry?: () => void } | undefined>(
@@ -70,7 +72,7 @@
     retryTimer = undefined
   }
   function retryWireless(key: string) {
-    if (!key.startsWith('bluetooth:') && !key.startsWith('local:')) return
+    if (!key.startsWith('local:')) return
     if (retryTimer !== undefined && lastRetryKey === key) return
     cancelRetry()
     retryCount = key === lastRetryKey ? retryCount + 1 : 0
@@ -89,14 +91,14 @@
   let inventoryChanged = false
   let mounted = false
   let foreground = $state(true)
-  function inventory(next: FoundKeyboard[]) {
+  function inventory(next: FoundKeyboard[], native: boolean) {
+    nativeBluetooth = native
     const previous = new Set(boards.map(board => board.key))
     const present = new Set(next.map(board => board.key))
     const added = next.filter(board => !previous.has(board.key))
     if (!added.length && previous.size === present.size) return
     for (const key of attempted) if (!present.has(key)) attempted.delete(key)
     if (!present.has(lastRetryKey)) cancelRetry()
-    // Web Bluetooth returns grants even when the peripheral is out of range.
     if (current && added.length === 1 && added[0].key !== current && added[0].kind !== 'bluetooth') pending = added[0]
     if (added.length > 1 || (pending && !present.has(pending.key))) pending = undefined
     inventoryChanged = true
@@ -127,12 +129,7 @@
     if (new URLSearchParams(location.search).get('tool') === 'bindings') active = 'bindings'
     mounted = true
     foreground = !document.hidden
-    discovery = discoverKeyboards(inventory, board => {
-      if (board.key === current || attempted.has(board.key) || dialog || sample) return
-      pending = board
-      inventoryChanged = true
-      boards = [...boards]
-    })
+    discovery = discoverKeyboards(inventory)
     hardware = { hid: 'hid' in navigator, serial: 'serial' in navigator, bluetooth: 'bluetooth' in navigator }
     void import('$lib/zmk/studio-panel.svelte').then(({ default: component }) => Studio = component).catch(() => message = 'Studio could not load. Refresh to try again.')
     return () => { mounted = false; cancelRetry(); discovery?.stop(); if (hmk && !sample) void hmk.disconnect() }
@@ -150,6 +147,7 @@
       attempted.add(current)
       if (!manual) retryWireless(current)
     }
+    if (current?.startsWith('bluetooth:')) void discovery?.refresh()
     protocol = null; sample = false; active = 'home'; name = ''; hmk = undefined; light = false; custom = false
     message = notice; current = undefined; inventoryChanged = true; matrixSource = undefined; hidBusy = false; studioBusy = false; hmkBusy = false; epoch++
   }
@@ -221,13 +219,16 @@
     finally { choosing = false }
   }
 
-  async function connect(kind: 'hid' | 'usb' | 'bluetooth') {
+  async function connect(kind: 'hid' | 'usb' | 'bluetooth', exactName = '') {
     if (busy) return
     choosing = true
     try {
       // Request permission during the click and keep the active keyboard if the picker is cancelled.
-      const board = await requestKeyboard(kind)
-      if (board) await openBoard(board)
+      const board = await requestKeyboard(kind, exactName)
+      if (board) {
+        await openBoard(board)
+        if (current === board.key) bluetoothName = ''
+      }
     } catch (error) {
       if (!(error instanceof DOMException && error.name === 'NotFoundError')) message = String(error)
     } finally { choosing = false }
@@ -246,7 +247,25 @@
     {/each}
     <Button variant="outline" disabled={busy || !hardware.hid} onclick={() => connect('hid')}>{$t("USB HID · VIA or HMK")}</Button>
     <Button variant="outline" disabled={busy || !hardware.serial || !Studio} onclick={() => connect('usb')}>{$t("USB serial · ZMK Studio")}</Button>
-    <Button variant="outline" disabled={busy || !hardware.bluetooth || !Studio} onclick={() => connect('bluetooth')}>Bluetooth · ZMK Studio</Button>
+    {#if nativeBluetooth}
+      {#if !boards.some(board => board.kind === 'local')}
+        <p class="text-sm text-muted-foreground">{$t('Connect your Studio keyboard in macOS Bluetooth settings to see it here.')}</p>
+      {/if}
+    {:else}
+      <Button variant="outline" disabled={busy || !hardware.bluetooth || !Studio} onclick={() => connect('bluetooth')}>Bluetooth · ZMK Studio</Button>
+      {#if hardware.bluetooth}
+        <details class="text-sm">
+          <summary class="cursor-pointer text-muted-foreground">{$t('Keyboard missing from Bluetooth picker?')}</summary>
+          <form class="mt-2 grid gap-2" onsubmit={event => { event.preventDefault(); void connect('bluetooth', bluetoothName) }}>
+            <label class="grid gap-1">
+              {$t('Keyboard name from Bluetooth settings')}
+              <input class="h-9 rounded-md border bg-background px-3" bind:value={bluetoothName} autocomplete="off" required />
+            </label>
+            <Button type="submit" variant="outline" disabled={busy || !Studio || !bluetoothName.trim()}>{$t('Find this keyboard')}</Button>
+          </form>
+        </details>
+      {/if}
+    {/if}
     {#if protocol}<Button variant="ghost" disabled={busy} onclick={disconnect}>{$t('Disconnect keyboard')}</Button>{/if}
     {#if !protocol}
       <details class="border-t pt-3">

@@ -10,7 +10,7 @@ The beta runs on GitHub Pages. To reproduce the static build, run `npm ci`, `npm
 
 Run `npm run dev` and open `/hmkconf/unified/` on the local server. The original HMK configurator stays at `/hmkconf/`; the earlier interaction prototypes, including firmware planning, stay at `/hmkconf/unified/lab/?demo=true`. The lab is not a list of supported hardware features.
 
-The workspace opens a single detected keyboard and shows a chooser when several are available. Use **Change keyboard** to switch. Choose new USB devices once in the browser. The Mac local server also discovers connected Bluetooth keyboards that expose ZMK Studio using CoreBluetooth and the Swift command-line tools. On a static site, Bluetooth discovery depends on the browser’s device permissions and support for remembered devices.
+The workspace opens a single detected keyboard and shows a chooser when several are available. Use **Change keyboard** to switch. Choose new USB devices once in the browser. The Mac local server also discovers connected Bluetooth keyboards that expose ZMK Studio using CoreBluetooth and the Swift command-line tools. On the public beta, choose **Bluetooth · ZMK Studio** to open the browser picker. If your keyboard is missing, enter its exact name from Bluetooth settings and choose **Find this keyboard**. The browser cannot list the computer’s Bluetooth connections. The workspace lists a Bluetooth keyboard once it opens a Studio session and drops it when the session disconnects.
 
 ### Local firmware builds
 
