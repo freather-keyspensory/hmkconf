@@ -87,6 +87,7 @@
   "For Bluetooth on a Mac running the local configurator, open it to use the current connection.": "Si tienes el configurador local en marcha en tu Mac, ábrelo para usar la conexión Bluetooth actual.",
   "Open local configurator": "Abrir el configurador local",
   "Mac setup instructions": "Configuración en Mac",
+  "Enter the exact Bluetooth name and choose Find this keyboard. While the picker is scanning, turn the keyboard off and on, then select it and click Pair.": "Escribe el nombre exacto de Bluetooth y selecciona «Buscar este teclado». Mientras el navegador busca, apaga y enciende el teclado. Selecciónalo en la lista y pulsa «Emparejar».",
   "Change keyboard": "Cambiar de teclado",
   "Design lab ↗": "Laboratorio de diseño ↗",
   "Built on HMKconf · GPL-3.0": "Basado en HMKconf · GPL-3.0",

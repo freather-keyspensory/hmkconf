@@ -292,6 +292,7 @@
   "For Bluetooth on a Mac running the local configurator, open it to use the current connection.": "如果 Mac 上已运行本地配置器，可打开它并使用当前的蓝牙连接。",
   "Open local configurator": "打开本地配置器",
   "Mac setup instructions": "Mac 设置说明",
+  "Enter the exact Bluetooth name and choose Find this keyboard. While the picker is scanning, turn the keyboard off and on, then select it and click Pair.": "输入准确的蓝牙名称，点击「查找此键盘」。在浏览器扫描时，将键盘关机再开机，然后在列表中选中它并点击「配对」。",
   "Change keyboard": "更换键盘",
   "Design lab ↗": "设计实验室 ↗",
   "Built on HMKconf · GPL-3.0": "基于 HMKconf · GPL-3.0",

@@ -262,8 +262,18 @@
       {#if hardware.bluetooth || hostedOnMac}
         <details class="text-sm" bind:open={bluetoothHelp}>
           <summary class="cursor-pointer text-muted-foreground">{$t('Keyboard missing from Bluetooth picker?')}</summary>
-          <div class="mt-2 grid gap-2">
-            <p>{$t('Some keyboards stop advertising once connected to the computer. The browser may then show an empty list, even when you enter the exact name.')}</p>
+          <p class="mt-2">{$t('Some keyboards stop advertising once connected to the computer. The browser may then show an empty list, even when you enter the exact name.')}</p>
+          {#if hardware.bluetooth}
+            <form class="mt-2 grid gap-2" onsubmit={event => { event.preventDefault(); void connect('bluetooth', bluetoothName) }}>
+              <p>{$t("Enter the exact Bluetooth name and choose Find this keyboard. While the picker is scanning, turn the keyboard off and on, then select it and click Pair.")}</p>
+              <label class="grid gap-1">
+                {$t('Keyboard name from Bluetooth settings')}
+                <input class="h-9 rounded-md border bg-background px-3" bind:value={bluetoothName} autocomplete="off" required />
+              </label>
+              <Button type="submit" variant="outline" disabled={busy || !Studio || !bluetoothName.trim()}>{$t('Find this keyboard')}</Button>
+            </form>
+          {/if}
+          <div class="mt-3 grid gap-2 border-t pt-3">
             <p>{$t('To use this site with a cable, connect the keyboard by USB and choose USB serial · ZMK Studio.')}</p>
             {#if hostedOnMac}
               <p>{$t('For Bluetooth on a Mac running the local configurator, open it to use the current connection.')}</p>
@@ -273,15 +283,6 @@
               </div>
             {/if}
           </div>
-          {#if hardware.bluetooth}
-            <form class="mt-2 grid gap-2" onsubmit={event => { event.preventDefault(); void connect('bluetooth', bluetoothName) }}>
-              <label class="grid gap-1">
-                {$t('Keyboard name from Bluetooth settings')}
-                <input class="h-9 rounded-md border bg-background px-3" bind:value={bluetoothName} autocomplete="off" required />
-              </label>
-              <Button type="submit" variant="outline" disabled={busy || !Studio || !bluetoothName.trim()}>{$t('Find this keyboard')}</Button>
-            </form>
-          {/if}
         </details>
       {/if}
     {/if}

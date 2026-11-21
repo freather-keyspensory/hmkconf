@@ -87,6 +87,7 @@
   "For Bluetooth on a Mac running the local configurator, open it to use the current connection.": "Mac에서 로컬 설정 도구를 실행 중이라면 도구를 열어 현재 Bluetooth 연결을 사용하세요.",
   "Open local configurator": "로컬 설정 도구 열기",
   "Mac setup instructions": "Mac 설정 안내",
+  "Enter the exact Bluetooth name and choose Find this keyboard. While the picker is scanning, turn the keyboard off and on, then select it and click Pair.": "정확한 Bluetooth 이름을 입력하고 ‘이 키보드 찾기’를 누르세요. 브라우저가 검색하는 동안 키보드를 껐다 켠 다음 목록에서 키보드를 선택하고 페어링을 누르세요.",
   "Change keyboard": "키보드 변경",
   "Design lab ↗": "디자인 실험실 ↗",
   "Built on HMKconf · GPL-3.0": "HMKconf 기반 · GPL-3.0",
