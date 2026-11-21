@@ -1,0 +1,11 @@
+<script lang="ts">
+ import { onMount } from 'svelte'
+ let {effect,brightness,speed,hue,saturation,hue2,saturation2,colors,onSelect,selected}:{effect:number;brightness:number;speed:number;hue:number;saturation:number;hue2:number;saturation2:number;colors:{hue:number;saturation:number}[];onSelect:(index:number)=>void;selected:number|null}=$props()
+ const layout={width:6,height:1}
+ let time=$state(0)
+ onMount(()=>{const started=performance.now();const timer=setInterval(()=>time=(performance.now()-started)/1000,50);return()=>clearInterval(timer)})
+ function hsv(h:number,s:number,v:number){h=((h%256)+256)%256/256*6;s/=255;v/=255;const c=v*s,x=c*(1-Math.abs(h%2-1)),m=v-c;const rgb=h<1?[c,x,0]:h<2?[x,c,0]:h<3?[0,c,x]:h<4?[0,x,c]:h<5?[x,0,c]:[c,0,x];return `rgb(${rgb.map(n=>Math.round((n+m)*255)).join(',')})`}
+ function led(key:{index:number;x:number;y:number}){const e=Number(effect),t=time*(.25+Number(speed)*.4);let h=Number(hue),s=Number(saturation),v=e===0?0:Number(brightness);if(e===2){h=Number(hue);s=Number(saturation)}if(e===3){const f=key.y/Math.max(1,layout.height-1);h=h*(1-f)+hue2*f;s=s*(1-f)+saturation2*f}if(e===4){const alternate=Math.floor(t+key.index)%2;h=alternate?hue2:h;s=alternate?saturation2:s;v*=.25+.75*Math.max(0,Math.sin(t*3+key.index*2))}if(e>=5&&e<=7)h=t*50+(e===6?key.x*45:e===7?key.y*45:0);if(e===8){h=key.index*47+Math.floor(t)*31;v*=.25+.75*Math.max(0,Math.sin(t*3+key.index*2))}if(e===9)h=t*50+Math.hypot(key.x-layout.width/2,key.y-layout.height/2)*60;if(e===10)v*=.2+.8*(.5+.5*Math.sin(t*4-Math.hypot(key.x-layout.width/2,key.y-layout.height/2)*3));return hsv(h,s,v)}
+</script>
+<div class="my-5 rounded-lg border bg-background p-5"><div class="flex justify-between text-sm"><span>RGB status</span><span class="text-xs text-muted-foreground">{Number(effect)===0?'Off':'On'} · {Math.round(brightness/255*100)}% brightness</span></div><div class="status-bar" role="img" aria-label="Overall RGB effect illustration" style:background={'linear-gradient(90deg,'+Array.from({length:24},(_,i)=>led({index:i,x:i/23*6,y:i/23})).join(',')+')'}></div><p class="mt-3 text-xs text-muted-foreground">Overall effect illustration · does not represent individual LEDs or live LED telemetry.</p></div>
+<style>.status-bar{width:100%;height:42px;margin-top:18px;border:1px solid var(--border);border-radius:7px}</style>

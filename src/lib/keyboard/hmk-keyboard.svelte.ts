@@ -115,8 +115,11 @@ class HMKKeyboard implements Keyboard {
 
   async disconnect() {
     await this.commander.clear()
-    await this.commander.hidDevice.close()
-    this.onDisconnect?.(this)
+    try {
+      if (this.commander.hidDevice.opened) await this.commander.hidDevice.close()
+    } finally {
+      this.onDisconnect?.(this)
+    }
   }
   async forget() {
     await this.commander.clear()
@@ -225,6 +228,17 @@ class HMKKeyboard implements Keyboard {
   }
 }
 
+export const hmkHidFilter = {
+  usagePage: HMK_DEVICE_USAGE_PAGE,
+  usage: HMK_DEVICE_USAGE_ID,
+}
+
+export function isHmkInterface(device: HIDDevice) {
+  return device.collections.some(
+    ({ usagePage, usage }) => usagePage === hmkHidFilter.usagePage && usage === hmkHidFilter.usage,
+  )
+}
+
 export async function connect(
   onDisconnect?: (keyboard: Keyboard) => void,
 ): Promise<Keyboard | null> {
@@ -232,30 +246,20 @@ export async function connect(
     throw new Error("WebHID is not supported in this browser.")
   }
 
-  const devices = (await navigator.hid.getDevices()).filter(
-    (device) =>
-      device.collections[0].usagePage === HMK_DEVICE_USAGE_PAGE &&
-      device.collections[0].usage === HMK_DEVICE_USAGE_ID,
-  )
+  const devices = (await navigator.hid.getDevices()).filter(isHmkInterface)
+  const device = devices[0] ?? (await navigator.hid.requestDevice({ filters: [hmkHidFilter] }))[0]
+  return device ? connectHmkDevice(device, onDisconnect) : null
+}
 
-  if (devices.length === 0) {
-    devices.push(
-      ...(await navigator.hid.requestDevice({
-        filters: [
-          { usagePage: HMK_DEVICE_USAGE_PAGE, usage: HMK_DEVICE_USAGE_ID },
-        ],
-      })),
-    )
-  }
+export async function connectHmkDevice(
+  device: HIDDevice,
+  onDisconnect?: (keyboard: Keyboard) => void,
+): Promise<Keyboard> {
+  if (!isHmkInterface(device)) throw new Error("The selected HID interface is not HMK.")
 
-  if (devices.length === 0) return null
-
-  const commander = new Commander(devices[0])
-  if (!commander.hidDevice.opened) {
-    await commander.hidDevice.open()
-  }
-
+  const commander = new Commander(device)
   try {
+    if (!device.opened) await device.open()
     const version = await firmwareVersion(commander)
     if (version < HMK_FIRMWARE_MIN_VERSION) {
       throw new Error(
@@ -270,18 +274,21 @@ export async function connect(
       version,
       metadata,
       commander,
-      onDisconnect,
+      onDisconnect: (disconnected) => {
+        navigator.hid.removeEventListener("disconnect", handleDisconnect)
+        onDisconnect?.(disconnected)
+      },
     })
 
-    navigator.hid.addEventListener("disconnect", async function handler() {
-      navigator.hid.removeEventListener("disconnect", handler)
-      await keyboard.disconnect()
-    })
+    function handleDisconnect(event: HIDConnectionEvent) {
+      if (event.device === device) void keyboard.disconnect().catch(console.error)
+    }
+    navigator.hid.addEventListener("disconnect", handleDisconnect)
 
     return keyboard
   } catch (err) {
     await commander.clear()
-    await commander.hidDevice.forget()
+    if (device.opened) await device.close().catch(() => {})
 
     throw err
   }

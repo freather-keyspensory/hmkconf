@@ -15,7 +15,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <script lang="ts">
   import { WrenchIcon } from "@lucide/svelte"
-  import { persistedStateContext } from "$lib/configurator/context.svelte"
+  import { layoutToolContext, persistedStateContext } from "$lib/configurator/context.svelte"
   import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
   import { onMount } from "svelte"
@@ -25,6 +25,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import * as Popover from "../ui/popover"
   import * as Select from "../ui/select"
 
+  const inLayoutTool = layoutToolContext.getOr(false)
   const persistedState = persistedStateContext.get()
   const { layoutOptions } = $derived(persistedState.current)
   const keyboard = keyboardContext.get()
@@ -76,7 +77,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   }
 </script>
 
-{#if labels.length > 0}
+{#if !inLayoutTool && labels.length > 0}
   <Popover.Root>
     <Popover.Trigger
       class={buttonVariants({ size: "icon", variant: "outline" })}

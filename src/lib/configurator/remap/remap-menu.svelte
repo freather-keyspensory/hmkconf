@@ -19,6 +19,17 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import { displayLayoutContext, remapStateContext } from "../context.svelte"
   import { keymapQueryContext } from "../queries/keymap-query.svelte"
 
+  const { bluetooth = false, customBindings = [] }: { bluetooth?: boolean; customBindings?: {id:string;label:string;kind:string}[] } = $props()
+  let bluetoothBinding = $state("")
+  const bluetoothKeys = [
+    ["BT_SEL 0", "Profile 1"], ["BT_SEL 1", "Profile 2"],
+    ["BT_SEL 2", "Profile 3"], ["BT_SEL 3", "Profile 4"],
+    ["BT_SEL 4", "Profile 5"], ["BT_NXT", "Next profile"],
+    ["BT_PRV", "Previous profile"], ["BT_CLR", "Clear pairing"],
+    ["BT_CLR_ALL", "Clear all pairings"],
+    ["OUT_USB", "USB output"], ["OUT_BLE", "Bluetooth output"],
+    ["OUT_TOG", "Toggle output"],
+  ]
   const allKeys = $derived(
     displayLayoutContext.get().displayKeys.map(({ key }) => key),
   )
@@ -31,6 +42,13 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 <FixedScrollArea class="p-4">
   <KeycodeAccordion
+    extraGroups={[
+      ...(bluetooth ? [{name:'Bluetooth',items:bluetoothKeys.map(([id,label])=>({id,label}))}] : []),
+      ...['Combo','Macro'].map(kind=>({name:kind==='Combo'?'Combos':'Macros',items:customBindings.filter(b=>b.kind===kind).map(b=>({id:b.id,label:b.label}))})),
+    ]}
+    bindingDisabled={key===null}
+    onBindingSelected={(id,label)=>bluetoothBinding=`Layer ${layer} · key ${key}: ${label} (${id})`}
+
     onKeycodeSelected={(keycode) => {
       if (key === null) return
       keymapQuery.set({ layer, offset: key, data: [keycode] })
@@ -39,4 +57,5 @@ this program. If not, see <https://www.gnu.org/licenses/>.
         index !== -1 && index + 1 < allKeys.length ? allKeys[index + 1] : null
     }}
   />
+  {#if bluetoothBinding}<p class="mt-3 text-xs text-muted-foreground" role="status">Preview selection · {bluetoothBinding}</p>{/if}
 </FixedScrollArea>

@@ -1,15 +1,27 @@
 import { derived, get, writable } from "svelte/store"
+// Custom-control labels include translations from the VIA app locale catalogs (GPL-3.0).
 import zhCN from "./zh-CN.json"
+import ja from "./ja.json"
+import ko from "./ko.json"
+import es from "./es.json"
 
-export type Language = "en" | "zh-CN"
+export const languageNames = {
+  en: "English",
+  "zh-CN": "简体中文",
+  ja: "日本語",
+  ko: "한국어",
+  es: "Español",
+} as const
+export type Language = keyof typeof languageNames
 export const language = writable<Language>("en")
-const messages: Record<string, string> = zhCN
+const messages: Record<Language, Record<string, string>> = { en: {}, "zh-CN": zhCN, ja, ko, es }
 export function translateFor(
   locale: Language,
   text: string,
   values: Record<string, string | number> = {},
 ) {
-  const translated = locale === "zh-CN" ? (messages[text] ?? text) : text
+  const dictionary = messages[locale]
+  const translated = Object.hasOwn(dictionary, text) ? dictionary[text] : text
   return translated.replace(/\{(\w+)\}/g, (match, key) =>
     String(values[key] ?? match),
   )
@@ -42,11 +54,17 @@ export function initializeLanguage() {
   } catch {
     /* Use browser preference. */
   }
-  const locale =
-    saved === "en" || saved === "zh-CN"
-      ? saved
-      : navigator.language.toLowerCase().startsWith("zh")
-        ? "zh-CN"
-        : "en"
-  setLanguage(locale)
+  if (saved && Object.hasOwn(languageNames, saved)) {
+    setLanguage(saved as Language)
+    return
+  }
+  for (const preference of navigator.languages?.length ? navigator.languages : [navigator.language]) {
+    const base = preference.toLowerCase().split("-")[0]
+    const locale = base === "zh" ? "zh-CN" : base
+    if (Object.hasOwn(languageNames, locale)) {
+      setLanguage(locale as Language)
+      return
+    }
+  }
+  setLanguage("en")
 }

@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "name": "Keyspensory",
+  "modules": [
+    {
+      "id": "zmk__battery_history",
+      "name": "Battery history",
+      "repository": "https://github.com/cormoran/zmk-module-battery-history",
+      "editorUrl": "https://cormoran.github.io/zmk-module-battery-history/",
+      "summary": "See how battery charge changes over time.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran_ble",
+      "name": "Bluetooth management",
+      "repository": "https://github.com/cormoran/zmk-module-ble-management",
+      "editorUrl": "https://cormoran.github.io/zmk-module-ble-management/",
+      "summary": "View paired devices and switch Bluetooth profiles.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran_custom_settings",
+      "name": "Custom settings",
+      "repository": "https://github.com/cormoran/zmk-feature-custom-settings",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-custom-settings/",
+      "summary": "Edit the settings registered by your keyboard’s modules.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "zmk__device_info",
+      "name": "Device information",
+      "repository": "https://github.com/cormoran/zmk-feature-device-info",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-device-info/",
+      "summary": "Check the firmware build, uptime and last reset cause.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__fast_keymap",
+      "name": "Fast keymap",
+      "repository": "https://github.com/cormoran/zmk-feature-fast-keymap",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-fast-keymap/",
+      "summary": "Load and export the keymap over a slow Bluetooth connection.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__os_detection",
+      "name": "Host operating system",
+      "repository": "https://github.com/cormoran/zmk-feature-os-detection",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-os-detection/",
+      "summary": "See which operating system the keyboard detects over USB or Bluetooth.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "zmk__input_stream",
+      "name": "Input stream",
+      "repository": "https://github.com/cormoran/zmk-feature-input-stream",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-input-stream/",
+      "summary": "Watch key presses, releases and layer changes as they happen.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__kscan_diagnostics",
+      "name": "Key scan diagnostics",
+      "repository": "https://github.com/cormoran/zmk-feature-kscan-diagnostics",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-kscan-diagnostics/",
+      "summary": "Find missed presses, double presses and faulty matrix lines.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__led_brightness",
+      "name": "LED brightness",
+      "repository": "https://github.com/cormoran/zmk-led-brightness-rpc",
+      "editorUrl": "https://cormoran.github.io/zmk-led-brightness-rpc/",
+      "summary": "Adjust the brightness of the backlight or underglow.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__physical_layouts",
+      "name": "Module physical layouts",
+      "repository": "https://github.com/cormoran/zmk-feature-module-physical-layout",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-module-physical-layout/",
+      "summary": "See trackballs, knobs and trackpads alongside the keys.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__pmw3610",
+      "name": "PMW3610 sensor",
+      "repository": "https://github.com/cormoran/zmk-driver-pmw3610-with-custom-studio-rpc",
+      "editorUrl": "https://cormoran.github.io/zmk-driver-pmw3610-with-custom-studio-rpc/",
+      "summary": "Tune the optical sensor and inspect the images it captures.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__runtime_combo",
+      "name": "Runtime combos",
+      "repository": "https://github.com/cormoran/zmk-feature-runtime-combo",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-runtime-combo/",
+      "summary": "Choose the action triggered by pressing several keys together.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran_rip",
+      "name": "Runtime input processors",
+      "repository": "https://github.com/cormoran/zmk-module-runtime-input-processor",
+      "editorUrl": "https://cormoran.github.io/zmk-module-runtime-input-processor/",
+      "summary": "Adjust pointer speed, rotate movement or reverse an axis.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__runtime_macro",
+      "name": "Runtime macros",
+      "repository": "https://github.com/cormoran/zmk-feature-runtime-macro",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-runtime-macro/",
+      "summary": "Create named macros and edit their action sequences.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__runtime_tapdance",
+      "name": "Runtime tap dance",
+      "repository": "https://github.com/cormoran/zmk-feature-runtime-tapdance",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-runtime-tapdance/",
+      "summary": "Assign different actions to single, double and triple taps.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "zmk__settings",
+      "name": "Settings RPC",
+      "repository": "https://github.com/cormoran/zmk-module-settings-rpc",
+      "editorUrl": "https://cormoran.github.io/zmk-module-settings-rpc/",
+      "summary": "Set how long the keyboard waits before going idle or sleeping.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "zmk__perf",
+      "name": "Studio RPC performance",
+      "repository": "https://github.com/cormoran/zmk-feature-studio-rpc-perf",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-studio-rpc-perf/",
+      "summary": "Measure how quickly requests travel between Studio and the keyboard.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "cormoran__watchdog",
+      "name": "Watchdog",
+      "repository": "https://github.com/cormoran/zmk-feature-watchdog",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-watchdog/",
+      "summary": "Review firmware freezes and faults recorded by the keyboard.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    },
+    {
+      "id": "zmk__setting_expose",
+      "name": "Zephyr settings",
+      "repository": "https://github.com/cormoran/zmk-feature-zephyr-setting-expose",
+      "editorUrl": "https://cormoran.github.io/zmk-feature-zephyr-setting-expose/",
+      "summary": "Inspect, edit or delete values in the keyboard’s settings store.",
+      "author": {
+        "name": "cormoran",
+        "url": "https://github.com/cormoran"
+      }
+    }
+  ]
+}

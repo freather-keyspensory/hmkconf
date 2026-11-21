@@ -293,6 +293,8 @@ export class DisplayLayout {
   }
 }
 
+export const layoutToolContext = new Context<boolean>("hmk-layout-tool")
+
 export const displayLayoutContext = new Context<DisplayLayout>(
   "hmk-display-layout",
 )

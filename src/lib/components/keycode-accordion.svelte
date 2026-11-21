@@ -14,6 +14,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 <script lang="ts">
+  import BasicKeyboardPicker from "$lib/via/basic-keyboard-picker.svelte"
+  import { hmkKeyValue } from "$lib/workspace/hmk-key-values"
+  import { Keycode } from "$lib/libhmk/keycodes"
   import { XIcon } from "@lucide/svelte"
   import { t } from "$lib/i18n"
   import { keyboardContext } from "$lib/keyboard"
@@ -32,16 +35,24 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   const {
     class: className,
     onKeycodeSelected,
+    extraGroups = [],
+    onBindingSelected,
+    bindingDisabled = false,
+    workspacePicker = false,
     ...props
   }: WithoutChildrenOrChild<HTMLAttributes<HTMLDivElement>> & {
     onKeycodeSelected?: (keycode: number) => void
+    extraGroups?: {name:string; items:{id:string;label:string}[]}[]
+    onBindingSelected?: (id:string,label:string) => void
+    workspacePicker?: boolean
+    bindingDisabled?: boolean
   } = $props()
 
   let search = $state("")
   let accordionValue = $state(["Basic"])
 
   const getAccordionValue = () =>
-    search === "" ? accordionValue : Object.values(keycodeCategories)
+    search === "" ? accordionValue : [...Object.values(keycodeCategories), ...extraGroups.map(g=>g.name)]
   const setAccordionValue = (v: string[]) =>
     search === "" && (accordionValue = v)
 
@@ -71,7 +82,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 <div class={cn("flex w-full flex-col gap-2", className)} {...props}>
   <div class="flex justify-end">
     <InputGroup.Root class="w-60">
-      <InputGroup.Input bind:value={search} placeholder={$t("Search...")} />
+      <InputGroup.Input bind:value={search} aria-label={$t("Search keycodes")} placeholder={$t(workspacePicker ? "Search keycodes" : "Search...")} />
       <InputGroup.Addon align="inline-end">
         <InputGroup.Button onclick={() => (search = "")} size="icon-xs">
           <XIcon />
@@ -85,20 +96,35 @@ this program. If not, see <https://www.gnu.org/licenses/>.
     type="multiple"
   >
     {#each filteredKeycodes as [category, keycodes] (category)}
-      {#if keycodes.length > 0}
+      {#if keycodes.length > 0 || (workspacePicker && category === "Basic")}
         <Accordion.Item value={category}>
           <Accordion.Trigger>{$t(category)}</Accordion.Trigger>
-          <Accordion.Content class="flex flex-wrap text-sm">
-            {#each keycodes as keycode (keycode)}
+          <Accordion.Content class="text-sm">
+            {#if workspacePicker && category === 'Basic'}
+              <BasicKeyboardPicker {search} disabled={bindingDisabled} resolve={hmkKeyValue} onSelect={code => onKeycodeSelected?.(code)}/>
+            {/if}
+            <div class="flex flex-wrap">
+            {#each (workspacePicker && category === 'Basic' ? keycodes.filter(code => code === Keycode.KC_NONUS_HASH || code === Keycode.KC_NONUS_BACKSLASH) : keycodes) as keycode (keycode)}
               <div class="p-0.5" style={unitToStyle()}>
                 <KeycodeButton
+                  disabled={workspacePicker && bindingDisabled}
                   {keycode}
                   onclick={() => onKeycodeSelected?.(keycode)}
                   showTooltip
                 />
               </div>
             {/each}
+            </div>
           </Accordion.Content>
+        </Accordion.Item>
+      {/if}
+    {/each}
+    {#each extraGroups as group (group.name)}
+      {@const items = group.items.filter(item => !search || (item.label+' '+item.id+' '+group.name).toLowerCase().includes(search.toLowerCase()))}
+      {#if items.length}
+        <Accordion.Item value={group.name}>
+          <Accordion.Trigger>{group.name}</Accordion.Trigger>
+          <Accordion.Content><div class="flex flex-wrap gap-2 py-2">{#each items as item (item.id)}<button type="button" disabled={bindingDisabled} title={item.id} class="rounded-md border px-3 py-2 text-xs hover:bg-muted disabled:opacity-40" onclick={()=>onBindingSelected?.(item.id,item.label)}>{item.label}</button>{/each}</div></Accordion.Content>
         </Accordion.Item>
       {/if}
     {/each}

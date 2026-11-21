@@ -22,8 +22,10 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   import RemapMenubar from "./remap-menubar.svelte"
 
   const {
+    bluetooth = false,
+    customBindings = [],
     ...props
-  }: WithoutChildren<ComponentProps<typeof KeyboardEditor.Root>> = $props()
+  }: WithoutChildren<ComponentProps<typeof KeyboardEditor.Root>> & { bluetooth?: boolean; customBindings?: {id:string;label:string;kind:string}[] } = $props()
 </script>
 
 <KeyboardEditor.Root {...props}>
@@ -34,7 +36,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
   <KeyboardEditor.Handle />
   <KeyboardEditor.Pane>
     <KeyboardEditor.Container>
-      <RemapMenu />
+      <RemapMenu {bluetooth} {customBindings} />
     </KeyboardEditor.Container>
   </KeyboardEditor.Pane>
 </KeyboardEditor.Root>
